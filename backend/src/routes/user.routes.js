@@ -8,8 +8,7 @@ class UserRoutes {
   }
 
   #session_watcher(req, res, next) {
-    console.log(req.session);
-    if (!req.session.username) res.send("No acceso");
+    if (!req.session.username) res.send("No puedes acceder a esta pagina");
     else next();
   }
 
@@ -17,6 +16,7 @@ class UserRoutes {
     this.router.get("/", this.#session_watcher, ctrlUser.index);
     this.router.get("/signUp/", ctrlUser.viewSignUp);
     this.router.get("/signIn/", ctrlUser.viewSignIn);
+    this.router.post("/signIn", ctrlUser.signIn);
     this.router.get("/log_out", ctrlUser.logOut);
     this.router.get("/users/", ctrlUser.getUsers);
     this.router.get("/users/:id", ctrlUser.getUser);

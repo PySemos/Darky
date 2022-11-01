@@ -1,13 +1,26 @@
 const User = require("../models/user.model");
 const path = require("path");
+const pathFrontend = path.join(process.cwd(), "./frontend");
 
 function index(req, res) {
-  res.status(200).sendFile(path.resolve(__dirname, "./frontend/index.html"));
+  if (req.session.username) {
+    res.send(
+      `Welcome ${req.session.username} <a href='http://localhost:3000/api/log_out'>click to logout</a>`
+    );
+  } else res.sendFile(`${pathFrontend}/api/`);
 }
 
 async function getUser(req, res) {}
 
-async function getUsers(req, res) {}
+async function getUsers(req, res) {
+  try {
+    let users = await User.find();
+
+    res.json({ message: "Usuarios", body: users });
+  } catch (err) {
+    res.send("Ocurrio un error al obtener los usuarios");
+  }
+}
 
 async function addUser(req, res) {
   const { username, email, password } = req.body;
@@ -19,13 +32,12 @@ async function addUser(req, res) {
       let newUser = new User({ username, email, password });
 
       await newUser.save();
-
       res.send("Done");
     } else {
-      res.json({ message: "Usuario Existente" });
+      res.send("Usuario Existente");
     }
   } catch (err) {
-    res.send("Ocurrio un erro al obtener al crear un nuevo usuario");
+    res.send("Ocurrio un error al obtener al crear un nuevo usuario");
   }
 }
 
@@ -33,11 +45,12 @@ async function signIn(req, res) {
   try {
     let { username, password } = req.body;
     let user = await User.findOne({ username });
+
     if (user) {
       if (user.password === password) {
-        req.session.username = req.body.username;
+        req.session.username = username;
         res.send("Done");
-      } else res.send("Contrasenia incorrecta");
+      } else res.send("Verifique los datos");
     } else res.send("Usuario no encontrado");
   } catch (err) {
     res.send("Ocurrio un problema al loguarse");
@@ -45,16 +58,16 @@ async function signIn(req, res) {
 }
 
 function viewSignUp(req, res) {
-  res.sendFile(path.join(process.cwd(), "./frontend/sign_up.html"));
+  res.sendFile(`${pathFrontend}/sign_up.html`);
 }
 
 function viewSignIn(req, res) {
-  res.sendFile(path.join(process.cwd(), "./frontend/log_in.html"));
+  res.sendFile(`${pathFrontend}/log_in.html`);
 }
 
 function logOut(req, res) {
-  req.session == null;
-  res.send("Done");
+  req.session.destroy();
+  res.redirect("/api/");
 }
 
 module.exports = {
@@ -65,4 +78,5 @@ module.exports = {
   getUser,
   getUsers,
   addUser,
+  signIn,
 };
