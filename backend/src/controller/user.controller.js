@@ -1,6 +1,6 @@
 const User = require("../models/user.model");
 const path = require("path");
-const pathFrontend = path.join(process.cwd(), "./frontend");
+const pathFrontend = path.join(process.cwd(), "../../frontend");
 
 function index(req, res) {
   if (req.session.username) {
