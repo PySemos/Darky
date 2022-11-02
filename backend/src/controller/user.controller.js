@@ -32,6 +32,7 @@ async function addUser(req, res) {
       let newUser = new User({ username, email, password });
 
       await newUser.save();
+      req.session.username = username;
       res.send("Done");
     } else {
       res.send("Usuario Existente");
