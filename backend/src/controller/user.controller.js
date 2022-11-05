@@ -1,14 +1,7 @@
 const User = require("../models/user.model");
 const path = require("path");
-const pathFrontend = path.join(process.cwd(), "../../frontend");
+const pathFrontend = path.join(process.cwd(), "../../../frontend");
 
-function index(req, res) {
-  if (req.session.username) {
-    res.send(
-      `Welcome ${req.session.username} <a href='http://localhost:3000/api/log_out'>click to logout</a>`
-    );
-  } else res.sendFile(`${pathFrontend}/api/`);
-}
 
 async function getUser(req, res) {}
 
@@ -58,13 +51,6 @@ async function signIn(req, res) {
   }
 }
 
-function viewSignUp(req, res) {
-  res.sendFile(`${pathFrontend}/sign_up.html`);
-}
-
-function viewSignIn(req, res) {
-  res.sendFile(`${pathFrontend}/log_in.html`);
-}
 
 function logOut(req, res) {
   req.session.destroy();
@@ -72,9 +58,6 @@ function logOut(req, res) {
 }
 
 module.exports = {
-  index,
-  viewSignUp,
-  viewSignIn,
   logOut,
   getUser,
   getUsers,

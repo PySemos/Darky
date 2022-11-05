@@ -9,8 +9,8 @@ const PORT = process.env.PORT || 3000;
 const DB = require("./connections/connection");
 const morgan =require("morgan")
 // Rutas
-const userRoutes = require("./routes/user.routes");
-
+const apiRoutes = require("./routes/user.routes");
+const appRoutes = require("./routes/app.routes.js")
 class Index {
   constructor() {
     this.app = express();
@@ -30,14 +30,15 @@ class Index {
   #configs() {
     this.app.use(compression());
     this.app.use(express.json());
-    this.app.use(express.static(path.join(__dirname, "../frontend/public")));
+    this.app.use(express.static(path.join(__dirname, "../frontend/static")));
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(morgan('tiny'));
   }
 
   #routes() {
     // Ruta Inicial 'Index'
-    this.app.use("/api", userRoutes);
+    this.app.use("/",appRoutes)
+    this.app.use("/api", apiRoutes);
   }
 
   start() {
