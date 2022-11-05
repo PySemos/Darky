@@ -9,7 +9,6 @@ class MongoDB {
       console.log("Conectado correctamente a la base de datos");
     } catch (err) {
       console.log("Ocurrio un error al conectarse con la base de datos");
-      process.exit();
     }
   }
 }
