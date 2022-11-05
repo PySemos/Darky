@@ -30,7 +30,7 @@ class Index {
   #configs() {
     this.app.use(compression());
     this.app.use(express.json());
-    this.app.use(express.static(path.join(__dirname, "../frontend/static")));
+    this.app.use(express.static(path.join(__dirname, "../../frontend/static")));
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(morgan('tiny'));
   }
@@ -44,7 +44,7 @@ class Index {
   start() {
     // Incializamos el servidor
     this.app.listen(PORT, () => {
-      `Server en el puero ${PORT}`;
+      console.log(`Server en el puero ${PORT}`);
 
       // Iniciando la base de datos
       DB.init();
