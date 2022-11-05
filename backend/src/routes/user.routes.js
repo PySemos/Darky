@@ -21,7 +21,7 @@ class UserRoutes {
     this.router.get("/log_out", ctrlUser.logOut);
     this.router.get("/users/", ctrlUser.getUsers);
     this.router.get("/users/:id", ctrlUser.getUser);
-    this.router.post("/create_user/", ctrlUser.addUser);
+    this.router.post("/addUser/", ctrlUser.addUser);
   }
 }
 

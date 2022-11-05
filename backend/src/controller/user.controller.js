@@ -1,6 +1,6 @@
 const User = require("../models/user.model");
 const path = require("path");
-const pathFrontend = path.join(process.cwd(), "../../frontend");
+const pathFrontend = path.join(path.resolve(), "/frontend");
 
 function index(req, res) {
   if (req.session.username) {
@@ -23,20 +23,16 @@ async function getUsers(req, res) {
 }
 
 async function addUser(req, res) {
-  const { username, email, password } = req.body;
-
   try {
+    let { username } = req.body;
     let user = await User.findOne({ username });
 
     if (!user) {
-      let newUser = new User({ username, email, password });
-
+      let newUser = new User({ ...req.body });
       await newUser.save();
       req.session.username = username;
-      res.send("Done");
-    } else {
-      res.send("Usuario Existente");
-    }
+      res.send("Usuario Agregado Correctamente");
+    } else res.send("Usuario Existente");
   } catch (err) {
     res.send("Ocurrio un error al obtener al crear un nuevo usuario");
   }
