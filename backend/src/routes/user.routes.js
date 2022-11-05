@@ -8,7 +8,8 @@ class UserRoutes {
   }
 
   #session_watcher(req, res, next) {
-    if (!req.session.username) res.send("No puedes acceder a esta pagina");
+    console.log("/")
+    if (!req.session.username) res.redirect("/signIn");
     else next();
   }
 

@@ -7,7 +7,7 @@ const path = require("path");
 const configs = require("./configs");
 const PORT = process.env.PORT || 3000;
 const DB = require("./connections/connection");
-
+const morgan =require("morgan")
 // Rutas
 const userRoutes = require("./routes/user.routes");
 
@@ -32,6 +32,7 @@ class Index {
     this.app.use(express.json());
     this.app.use(express.static(path.join(__dirname, "../frontend/public")));
     this.app.use(express.urlencoded({ extended: false }));
+    this.app.use(morgan('tiny'));
   }
 
   #routes() {
