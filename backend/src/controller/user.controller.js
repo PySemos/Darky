@@ -1,17 +1,23 @@
 const User = require("../models/user.model");
 const path = require("path");
+const { json } = require("express");
 const pathFrontend = path.join(process.cwd(), "../../../frontend");
 
 
-async function getUser(req, res) {}
+async function getUser(req, res) {
+  const id = req.param
+}
 
 async function getUsers(req, res) {
   try {
     let users = await User.find();
 
-    res.json({ message: "Usuarios", body: users });
+    return res.json({ success:true, body: users });
   } catch (err) {
-    res.send("Ocurrio un error al obtener los usuarios");
+    return res.json({
+      success:false,
+      error:"Something happened with the request"
+    });
   }
 }
 
@@ -26,12 +32,19 @@ async function addUser(req, res) {
 
       await newUser.save();
       req.session.username = username;
-      res.send("Done");
+      return res.json({
+        sucess:true
+      });
     } else {
-      res.send("Usuario Existente");
+      return res.status(403).json({
+        success:true,
+        error:"An user with the same data already exists"
+      });
     }
   } catch (err) {
-    res.send("Ocurrio un error al obtener al crear un nuevo usuario");
+    return res.json({
+      error:"Something happened with the sign up"
+    });
   }
 }
 
@@ -43,18 +56,33 @@ async function signIn(req, res) {
     if (user) {
       if (user.password === password) {
         req.session.username = username;
-        res.send("Done");
-      } else res.send("Verifique los datos");
-    } else res.send("Usuario no encontrado");
+        return res.json({"success":true});
+      } else res.json({
+        sucess:false,
+        error:"Data corrupted"
+      });
+    } else return res.status(404).json({
+      success:false,
+      error:"Can't find that user"
+    });
   } catch (err) {
-    res.send("Ocurrio un problema al loguarse");
+    res.json({
+      success:false,
+      error:"Something happened with log in"
+    });
   }
 }
 
-
 function logOut(req, res) {
-  req.session.destroy();
-  res.redirect("/api/");
+  try{
+    req.session.destroy();
+    res.redirect("/");
+  }catch(error){
+    return res.json({
+      success:false,
+      error:"Can't log out the user"
+    })
+  }
 }
 
 module.exports = {
