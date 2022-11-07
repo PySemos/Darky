@@ -1,18 +1,8 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
-const {
-  usersGet,
-  signIn,
-  usersUpdate,
-  usersDelete,
-  usersPost,
-  viewSignUp,
-  viewSignIn,
-  index,
-  logOut,
-} = require("../controller/user");
+const ctrlUsers = require("../controller/user");
 const { emailExists } = require("../database/db-validators");
-const { fielValidator } = require("../middlewares/fields-validator");
+const { fieldValidator } = require("../middlewares/fields-validator");
 
 class UserRoutes {
   constructor() {
@@ -20,43 +10,42 @@ class UserRoutes {
     this.#routes();
   }
 
-  #session_watcher(req, res, next) {
-    if (!req.session.username) res.send("No puedes acceder a esta pagina");
-    else next();
-  }
-
   #routes() {
     // GETS
-    this.router.get("/", usersGet);
-    this.router.get("/index/", this.#session_watcher, index);
-    this.router.get("/signUp/", viewSignUp);
-    this.router.get("/signIn/", viewSignIn);
-    this.router.get("/logOut", logOut);
+    this.router.get("/", ctrlUsers.usersGet);
 
     // POSTS
+    // Method to create a new user
     this.router.post(
       "/",
       [
         check("email", "El email no es correcto").isEmail(),
         check("email").custom(emailExists),
-        fielValidator,
+        fieldValidator,
       ],
-      usersPost
+      ctrlUsers.usersPost
     );
-    this.router.post("/signIn", signIn);
 
     // PUTS
+    // Method to update a user
     this.router.put(
       "/:id",
-      [check("id", "El id ingresado es incorrecto").isMongoId(), fielValidator],
-      usersUpdate
+      [
+        check("id", "El id ingresado es incorrecto").isMongoId(),
+        fieldValidator,
+      ],
+      ctrlUsers.usersUpdate
     );
 
     // DELETE
+    // Method to delete a user
     this.router.delete(
       "/:id",
-      [check("id", "El id ingresado es incorrecto").isMongoId(), fielValidator],
-      usersDelete
+      [
+        check("id", "El id ingresado es incorrecto").isMongoId(),
+        fieldValidator,
+      ],
+      ctrlUsers.usersDelete
     );
   }
 }
