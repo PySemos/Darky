@@ -14,8 +14,8 @@ class AuthRoutes {
   }
 
   #routes() {
-    this.router.get("/", viewSignIn);
-    this.router.get("/signUp/", viewSignUp);
+    //this.router.get("/", viewSignIn);
+    //this.router.get("/signUp/", viewSignUp);
     this.router.get("/logOut", logOut);
     this.router.post("/", signIn);
   }

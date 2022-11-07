@@ -35,7 +35,7 @@ class Server {
     this.app.use(session(configs.option_session));
     this.app.use(compression());
     this.app.use(express.json());
-    this.app.use(express.static(path.join(__dirname, "../frontend/public")));
+    this.app.use(express.static(path.join(__dirname, "../frontend/static")));
     this.app.use(express.urlencoded({ extended: false }));
   }
 

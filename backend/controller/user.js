@@ -12,21 +12,22 @@ const usersGet = async (req, res) => {
       User.find(query).skip(offset).limit(limit),
     ]);
 
-    res.json({ count, users });
+    res.json({sucess:true,data:{ count, users }});
   } catch (err) {
-    res.json({ msg: "An error ocurred while searching for a user" });
+    res.json({sucess:false, error: "An error ocurred while searching for a user" });
   }
 };
 
 // Method to create a new user
 const usersPost = async (req, res) => {
   try {
+    console.log()
     let newUser = new User({ ...req.body });
     await newUser.save();
     req.session.username = newUser.username;
     res.status(200).json({ sucess: true, newUser });
   } catch (err) {
-    res.status(500).json({ msg: "An error ocurred while creating a user" });
+    res.status(500).json({ sucess:false,error: "An error ocurred while creating a user" });
   }
 };
 
@@ -35,9 +36,11 @@ const usersUpdate = async (req, res) => {
   try {
     let id = req.params.id;
     let user = await User.findByIdAndUpdate(id, { ...req.body });
-    res.json(user);
+    res.json({
+      sucess:true,
+      user:user});
   } catch (err) {
-    res.status(500).json({ msg: "An error occurred while updating the user" });
+    res.status(500).json({suess:true, error: "An error occurred while updating the user" });
   }
 };
 
@@ -46,9 +49,9 @@ const usersDelete = async (req, res) => {
   try {
     let id = req.params.id;
     let user = await User.findOneAndUpdate({ _id: id }, { active: false });
-    res.json(user);
+    res.json({sucess:true,user:user});
   } catch (err) {
-    res.status(500).json({ msg: "An error occurred while deleting a user" });
+    res.status(500).json({sucess:false ,error: "An error occurred while deleting a user" });
   }
 };
 

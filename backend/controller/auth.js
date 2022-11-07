@@ -10,17 +10,19 @@ const signIn = async (req, res) => {
 
     //
     let user = await User.findOne({ username });
-
     if (user && user.active) {
       if (user.password === password) {
         req.session.username = username;
-        res.json(user);
-      } else res.json({ success: false, msg: "Check the data" });
-    } else res.status(404).json({ success: false, msg: "User not found" });
+        res.json({
+          sucess:true,
+          user:user
+        });
+      } else res.json({ sucess: false, error: "Check the data" });
+    } else res.status(404).json({ sucess: false, error: "User not found" });
   } catch (err) {
     res
       .json(500)
-      .json({ success: false, msg: "There was a problem logging in" });
+      .json({ success: false, error: "There was a problem logging in" });
   }
 };
 
@@ -30,7 +32,7 @@ const viewSignIn = (_, res) => res.sendFile(`${pathFrontend}/log_in.html`);
 
 const logOut = (req, res) => {
   req.session.destroy();
-  res.redirect("/api/");
+  res.redirect("/");
 };
 
 module.exports = {

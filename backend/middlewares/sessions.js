@@ -1,5 +1,5 @@
 const session_watcher = (req, res, next) => {
-  if (!req.session.username) res.send("No puedes acceder a esta pagina");
+  if (!req.session.username) res.redirect("/signIn");
   else next();
 };
 

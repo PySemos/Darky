@@ -8,19 +8,40 @@
   </head>
   <body>
     <!-- Solo un registro normal, el email no es requerido por razones mias de negocio que implementare despues -->
-<<<<<<< HEAD
-    <form action="/create_user" method="post">
-        <input type="text" placeholder="Username" name="username" required>
-        <input type="email" placeholder="Email" name="email">
-        <input type="password" placeholder="Password" required name = "password">
-        <input type="submit" value="Send">
-=======
-    <form action="/api/users/" method="post">
-      <input type="text" placeholder="Username" name="username" required />
-      <input type="email" placeholder="Email" name="email" />
-      <input type="password" placeholder="Password" required name="password" />
+    <form action="/api/users/" method="post" id="form">
+      <input type="text" placeholder="Username" id = "username" name="username" required />
+      <input type="email" placeholder="Email" id = "email" name="email" />
+      <input type="password" placeholder="Password"id = "password" required name="password" />
       <input type="submit" value="Send" />
->>>>>>> a5ecab912b2e3863b3d4d2a793e7f203b18da0c4
     </form>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   </body>
+  <script>
+    let form = document.querySelector("#form")
+    form.addEventListener("submit",async(e)=>{
+      e.preventDefault()
+      let username = document.querySelector("#username").value
+      let email = document.querySelector("#email").value
+      let password = document.querySelector("#password").value
+      console.log(username,email,password)
+      let res = await fetch("/api/users/createUser",{
+        method:"post",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          username:username,
+          email:email,
+          password:password
+        }
+      )})
+      let resJSON = await res.json()
+      if(resJSON.sucess){
+        window.location.replace("/")
+      }
+      else{
+        swal("Oops",`${resJSON.error}`,"error")
+      }
+    })
+  </script>
 </html>

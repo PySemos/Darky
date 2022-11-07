@@ -17,11 +17,11 @@ class UserRoutes {
     // POSTS
     // Method to create a new user
     this.router.post(
-      "/",
+      "/createUser",
       [
-        check("email", "El email no es correcto").isEmail(),
-        check("email").custom(emailExists),
-        fieldValidator,
+        //check("email", "El email no es correcto").isEmail(),
+        //check("email").custom(emailExists),
+        //fieldValidator,
       ],
       ctrlUsers.usersPost
     );
@@ -31,8 +31,8 @@ class UserRoutes {
     this.router.put(
       "/:id",
       [
-        check("id", "El id ingresado es incorrecto").isMongoId(),
-        fieldValidator,
+        //check("id", "El id ingresado es incorrecto").isMongoId(),
+        //fieldValidator,
       ],
       ctrlUsers.usersUpdate
     );
@@ -42,8 +42,8 @@ class UserRoutes {
     this.router.delete(
       "/:id",
       [
-        check("id", "El id ingresado es incorrecto").isMongoId(),
-        fieldValidator,
+        //check("id", "El id ingresado es incorrecto").isMongoId(),
+        //fieldValidator,
       ],
       ctrlUsers.usersDelete
     );
