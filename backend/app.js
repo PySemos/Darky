@@ -10,17 +10,24 @@ const DB = require("./database/connection");
 
 // Rutas
 const userRoutes = require("./routes/user");
+const authRoutes = require("./routes/auth");
+const indexRoutes = require("./routes/index");
 
-class Index {
+class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
     this.#middlewares();
+    this.paths = {
+      index: "/",
+      users: "/api/users",
+      auth: "/api/auth",
+    };
 
-    // Inicializando la base de datos
+    // Initializing the database
     this.#connectDB();
 
-    // Incializamos la funcion con todas las rutas de nuestro programa
+    // Calling routes
     this.#routes();
   }
 
@@ -28,7 +35,7 @@ class Index {
     this.app.use(session(configs.option_session));
     this.app.use(compression());
     this.app.use(express.json());
-    this.app.use(express.static(path.join(__dirname, "../frontend/public")));
+    this.app.use(express.static(path.join(__dirname, "../frontend/static")));
     this.app.use(express.urlencoded({ extended: false }));
   }
 
@@ -37,16 +44,17 @@ class Index {
   }
 
   #routes() {
-    // Ruta Inicial 'Index'
-    this.app.use("/api/users", userRoutes);
+    this.app.use(this.paths.index, indexRoutes);
+    this.app.use(this.paths.users, userRoutes);
+    this.app.use(this.paths.auth, authRoutes);
   }
 
   start() {
-    // Incializamos el servidor
-    this.app.listen(this.port, () => {
-      console.log(`Server en el puerto ${this.port}`);
-    });
+    // Initializing the server
+    this.app.listen(this.port, () =>
+      console.log(`Server en el puerto ${this.port}`)
+    );
   }
 }
 
-new Index().start();
+new Server().start();

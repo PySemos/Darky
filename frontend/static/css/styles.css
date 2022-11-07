@@ -1,0 +1,28 @@
+:root{
+    color-scheme: dark;
+}
+*{
+    font-size: 1.7vw;
+}
+
+
+.content{
+    text-align: center;
+}
+
+.button{
+    background-color: #007bff;
+    border:none;
+    width:10em;
+    border-radius: 20px;
+}
+
+.card{
+    display: flex;
+    flex-direction: column;
+    
+    margin: 0 auto;
+    text-align: center;
+    background-color: #010409;
+    width: fit-content;
+}
