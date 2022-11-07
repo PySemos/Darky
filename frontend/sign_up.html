@@ -1,18 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create User</title>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Solo un registro normal, el email no es requerido por razones mias de negocio que implementare despues -->
+<<<<<<< HEAD
     <form action="/create_user" method="post">
         <input type="text" placeholder="Username" name="username" required>
         <input type="email" placeholder="Email" name="email">
         <input type="password" placeholder="Password" required name = "password">
         <input type="submit" value="Send">
+=======
+    <form action="/api/users/" method="post">
+      <input type="text" placeholder="Username" name="username" required />
+      <input type="email" placeholder="Email" name="email" />
+      <input type="password" placeholder="Password" required name="password" />
+      <input type="submit" value="Send" />
+>>>>>>> a5ecab912b2e3863b3d4d2a793e7f203b18da0c4
     </form>
-</body>
+  </body>
 </html>
