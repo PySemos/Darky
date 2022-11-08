@@ -3,7 +3,7 @@ const { check } = require("express-validator");
 const ctrlUsers = require("../controller/user");
 const { emailExists } = require("../database/db-validators");
 const { fieldValidator } = require("../middlewares/fields-validator");
-
+const validate = require("../middlewares/validate")
 class UserRoutes {
   constructor() {
     this.router = Router();
@@ -22,6 +22,7 @@ class UserRoutes {
         //check("email", "El email no es correcto").isEmail(),
         //check("email").custom(emailExists),
         //fieldValidator,
+        validate.validateUser
       ],
       ctrlUsers.usersPost
     );

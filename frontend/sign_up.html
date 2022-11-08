@@ -4,35 +4,86 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+	  <link type="text/css" rel="stylesheet" href="/css/style-log_in.css" />
     <title>Create User</title>
   </head>
   <body>
-    <!-- Solo un registro normal, el email no es requerido por razones mias de negocio que implementare despues -->
-    <form action="/api/users/" method="post" id="form">
-      <input type="text" placeholder="Username" id = "username" name="username" required />
-      <input type="email" placeholder="Email" id = "email" name="email" />
-      <input type="password" placeholder="Password"id = "password" required name="password" />
-      <input type="submit" value="Send" />
-    </form>
+    <div id="booking" class="section">
+      <div class="section-center">
+        <div class="container">
+          <div class="row">
+            <div class="booking-form">
+              <form action="/api/users/" method="post" id="form">
+                <div class="form-group">
+                  <input class="form-control" type="text" placeholder="Enter your Username*" id="username" name="username">
+                </div>
+                <div class="form-group">
+                  <input class="form-control" type="email" placeholder="Enter email" id = "email" name="email" />
+                </div>
+                <div class="form-group">
+                  <input class="form-control" type="password" placeholder="Enter Password*" id="password" name="password">
+                </div>
+                <div class="form-btn">
+                  <button class="submit-btn">Send</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="/js/validate.js"></script>
   </body>
   <script>
+    window.onload = ()=>{
     let form = document.querySelector("#form")
     form.addEventListener("submit",async(e)=>{
       e.preventDefault()
-      let username = document.querySelector("#username").value
-      let email = document.querySelector("#email").value
-      let password = document.querySelector("#password").value
-      console.log(username,email,password)
+      let username = document.querySelector("#username")
+      let email = document.querySelector("#email")
+      let password = document.querySelector("#password")
+      // Validation
+      let validate;
+      validate = validate_input(username,(error,element)=>{
+        if(error == Errors.empty){
+          swal({
+            title:"Oops",
+            text:"The username can't be empty",
+            icon:"error",
+            button:"Ok"
+          })
+        element.focus()
+        }
+      })
+      if (!validate){
+        return
+      }
+      validate = validate_input(password,(error,element)=>{
+        if(error == Errors.empty){
+          swal({
+            title:"Oops",
+            text:"The password can't be empty",
+            icon:"error",
+            button:"Ok"
+          })
+        element.focus()
+        }
+      })
+      if (!validate){
+        return
+      }
+      input_validate = validate_input(username)
       let res = await fetch("/api/users/createUser",{
         method:"post",
         headers:{
           "Content-Type":"application/json"
         },
         body:JSON.stringify({
-          username:username,
-          email:email,
-          password:password
+          username:username.value,
+          email:email.value,
+          password:password.value
         }
       )})
       let resJSON = await res.json()
@@ -43,5 +94,6 @@
         swal("Oops",`${resJSON.error}`,"error")
       }
     })
+  }
   </script>
 </html>

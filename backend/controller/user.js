@@ -1,6 +1,37 @@
 const User = require("../models/user");
 
+const emailIsUnique = async (email)=>{
+    try{
+      const allUsers = await User.find({})
+      for(let i = 0;i<allUsers.length;i++){
+        if(allUsers[i].email == email){
+          return false
+        }
+      }
+      return true    
+    }catch{
+      return false
+    }
+}
+
+const userIsUnique = async(username)=>{
+    try{
+      const allUsers = await User.find({})
+      for(let i = 0;i<allUsers.length;i++){
+        if(allUsers[i].username == username){
+          return false
+        }
+      }
+      return true
+    }
+    catch(e){
+      console.log(e)
+      return false
+    }
+}
+
 // Method to get all users or a single user
+
 const usersGet = async (req, res) => {
   try {
     const { id, limit = 5, offset = 0 } = req.query;
@@ -21,7 +52,9 @@ const usersGet = async (req, res) => {
 // Method to create a new user
 const usersPost = async (req, res) => {
   try {
-    console.log()
+    if(req.body.email == ''){
+      req.body.email = null
+    }
     let newUser = new User({ ...req.body });
     await newUser.save();
     req.session.username = newUser.username;
@@ -61,4 +94,6 @@ module.exports = {
   usersPost,
   usersUpdate,
   usersDelete,
+  userIsUnique,
+  emailIsUnique
 };
