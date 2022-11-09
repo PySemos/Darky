@@ -19,9 +19,7 @@ class UserRoutes {
     this.router.post(
       "/createUser",
       [
-        //check("email", "El email no es correcto").isEmail(),
-        //check("email").custom(emailExists),
-        //fieldValidator,
+        validate.validate,
         validate.validateUser
       ],
       ctrlUsers.usersPost

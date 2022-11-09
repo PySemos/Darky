@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
+const validate = require("../middlewares/validate")
 const {
   viewSignIn,
   viewSignUp,
@@ -17,7 +18,7 @@ class AuthRoutes {
     //this.router.get("/", viewSignIn);
     //this.router.get("/signUp/", viewSignUp);
     this.router.get("/logOut", logOut);
-    this.router.post("/", signIn);
+    this.router.post("/",validate.validate, signIn);
   }
 }
 

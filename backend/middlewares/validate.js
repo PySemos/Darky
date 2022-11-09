@@ -1,6 +1,6 @@
 const {userIsUnique,emailIsUnique} = require("../controller/user")
 
-const validateUser = async(req,res,next)=>{
+const validate = function(req,res,next){
     if(req.body.username ==''){
         return res.json({
             sucess:false,
@@ -13,6 +13,10 @@ const validateUser = async(req,res,next)=>{
             error:"Password can't be empty"
         })
     }
+    next()
+}
+
+const validateUser = async(req,res,next)=>{
     // Username is unique
     if(!await userIsUnique(req.body.username)){
         return res.json({
@@ -20,7 +24,7 @@ const validateUser = async(req,res,next)=>{
             error:"Username taken"
         })
     }
-    if(req.body.email!=""){
+    if(req.body.email!="" && req.body.email !=undefined){
         //Email is Unique
         if(!await emailIsUnique(req.body.email)){
             return res.json({
@@ -33,5 +37,6 @@ const validateUser = async(req,res,next)=>{
 }
 
 module.exports = {
+    validate:validate,
     validateUser:validateUser
 }
