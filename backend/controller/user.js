@@ -34,9 +34,10 @@ const userIsUnique = async(username)=>{
 
 const usersGet = async (req, res) => {
   try {
-    const { id, limit = 5, offset = 0 } = req.query;
+    const { id, username, limit = 5, offset = 0 } = req.query;
     const query = { active: true };
-    if (id) return res.json(await User.findById(id));
+    if (id) return res.json({sucess:true,user:await User.findById(id)});
+    if(username) return res.json({sucess:true,user:await User.findOne({username:username})})
 
     let [count, users] = await Promise.all([
       User.countDocuments(query),
@@ -57,6 +58,7 @@ const usersPost = async (req, res) => {
     }
     let newUser = new User({ ...req.body });
     await newUser.save();
+    console.log(newUser)
     req.session.username = newUser.username;
     res.status(200).json({ sucess: true, newUser });
   } catch (err) {

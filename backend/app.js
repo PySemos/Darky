@@ -12,6 +12,7 @@ const DB = require("./database/connection");
 const userRoutes = require("./routes/user");
 const authRoutes = require("./routes/auth");
 const indexRoutes = require("./routes/index");
+const morgan = require("morgan")
 
 class Server {
   constructor() {
@@ -37,6 +38,7 @@ class Server {
     this.app.use(express.json());
     this.app.use(express.static(path.join(__dirname, "../frontend/static")));
     this.app.use(express.urlencoded({ extended: false }));
+    this.app.use(morgan("tiny"))
   }
 
   #connectDB() {
