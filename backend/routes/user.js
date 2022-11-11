@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { check } = require("express-validator");
+//const { check } = require("express-validator");
 const ctrlUsers = require("../controller/user");
 const { emailExists } = require("../database/db-validators");
 const { fieldValidator } = require("../middlewares/fields-validator");
@@ -30,8 +30,8 @@ class UserRoutes {
     this.router.put(
       "/:id",
       [
-        //check("id", "El id ingresado es incorrecto").isMongoId(),
-        //fieldValidator,
+        validate.validate,
+        validate.validateUser
       ],
       ctrlUsers.usersUpdate
     );

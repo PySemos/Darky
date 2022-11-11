@@ -1,7 +1,7 @@
 const {userIsUnique,emailIsUnique} = require("../controller/user")
 
 const validate = function(req,res,next){
-    if(req.body.username ==''){
+    if(req.body.username == ''){
         return res.json({
             sucess:false,
             error:"Username can't be empty"

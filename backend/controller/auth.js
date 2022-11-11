@@ -21,7 +21,7 @@ const signIn = async (req, res) => {
     } else res.status(404).json({ sucess: false, error: "User not found" });
   } catch (err) {
     res
-      .json(500)
+      .status(500)
       .json({ success: false, error: "There was a problem logging in" });
   }
 };
@@ -30,9 +30,22 @@ const viewSignUp = (_, res) => res.sendFile(`${pathFrontend}/sign_up.html`);
 
 const viewSignIn = (_, res) => res.sendFile(`${pathFrontend}/log_in.html`);
 
+const viewlogOut = (req, res) => {
+  req.session.destroy()
+  return res.redirect("/")
+}
+
 const logOut = (req, res) => {
-  req.session.destroy();
-  res.redirect("/");
+  try{
+
+    req.session.destroy();
+    return res.json({
+      sucess:true
+    });
+  }
+  catch{
+    return res.json({sucess:false})
+  }
 };
 
 module.exports = {
@@ -40,4 +53,5 @@ module.exports = {
   viewSignIn,
   viewSignUp,
   logOut,
+  viewlogOut
 };

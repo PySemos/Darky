@@ -1,3 +1,6 @@
-2-Probar la API
-3-Documentar la API
+3-probar y documentar la api de inicio de sesion
 4-Documentar el proyecto
+5-Trabajar en hashear las contrasenas
+
+Extras:
+    Luego de empezar el chat habilitar validificacion por email
