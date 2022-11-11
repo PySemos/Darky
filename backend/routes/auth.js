@@ -6,6 +6,7 @@ const {
   viewSignUp,
   signIn,
   logOut,
+  viewlogOut,
 } = require("../controller/auth");
 
 class AuthRoutes {

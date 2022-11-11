@@ -73,9 +73,10 @@ const usersUpdate = async (req, res) => {
     let user = await User.findByIdAndUpdate(id, { ...req.body });
     res.json({
       sucess:true,
-      user:user});
+      oldUser:user
+    });
   } catch (err) {
-    res.status(500).json({suess:true, error: "An error occurred while updating the user" });
+    res.status(500).json({sucess:false, error: "An error occurred while updating the user" });
   }
 };
 
@@ -83,8 +84,14 @@ const usersUpdate = async (req, res) => {
 const usersDelete = async (req, res) => {
   try {
     let id = req.params.id;
-    let user = await User.findOneAndUpdate({ _id: id }, { active: false });
-    res.json({sucess:true,user:user});
+    let user = await User.findOne({ _id: id })
+    if(user.password === req.body.password){
+      user.remove()
+      res.json({sucess:true});
+    }
+    else{
+      res.json({sucess:false,error:"Password doesn't match"})
+    }
   } catch (err) {
     res.status(500).json({sucess:false ,error: "An error occurred while deleting a user" });
   }
