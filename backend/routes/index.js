@@ -6,6 +6,7 @@ const {
   viewSignUp,
   signIn,
   logOut,
+  viewlogOut
 } = require("../controller/auth");
 
 
@@ -19,7 +20,7 @@ class Index {
     this.router.get("/", session_watcher, index);
     this.router.get("/signIn/", viewSignIn);
     this.router.get("/signUp/", viewSignUp);
-    this.router.get("/logOut/", logOut);
+    this.router.get("/logOut/", viewlogOut);
   }
 }
 

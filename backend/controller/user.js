@@ -57,6 +57,7 @@ const usersPost = async (req, res) => {
       req.body.email = null
     }
     let newUser = new User({ ...req.body });
+    newUser.password = await newUser.createHash(req.body.password)
     await newUser.save();
     console.log(newUser)
     req.session.username = newUser.username;
@@ -85,7 +86,7 @@ const usersDelete = async (req, res) => {
   try {
     let id = req.params.id;
     let user = await User.findOne({ _id: id })
-    if(user.password === req.body.password){
+    if(await user.validatePassword(req.body.password)){    
       user.remove()
       res.json({sucess:true});
     }

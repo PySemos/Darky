@@ -1,5 +1,7 @@
 const {userIsUnique,emailIsUnique} = require("../controller/user")
 
+
+/* Middleware that validate if the username or password is empty */
 const validate = function(req,res,next){
     if(req.body.username == ''){
         return res.json({
@@ -16,6 +18,8 @@ const validate = function(req,res,next){
     next()
 }
 
+
+// Middleware that watch if the user provided is unique
 const validateUser = async(req,res,next)=>{
     // Username is unique
     if(!await userIsUnique(req.body.username)){

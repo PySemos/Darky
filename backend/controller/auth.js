@@ -10,8 +10,9 @@ const signIn = async (req, res) => {
 
     //
     let user = await User.findOne({ username });
+    
     if (user && user.active) {
-      if (user.password === password) {
+      if (await user.validatePassword(password)) {
         req.session.username = username;
         res.json({
           sucess:true,
