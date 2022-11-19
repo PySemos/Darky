@@ -3,3 +3,9 @@
 
 Extras:
     Luego de empezar el chat habilitar validificacion por email
+
+1-Empezado el chat
+2-Crear modelo para chat
+3-Conectarlo a la base de datos
+4-Poder conectar dos usuarios mediante chat(sockets)
+5-Guardar chat en la base de datos

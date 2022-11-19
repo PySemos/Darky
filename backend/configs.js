@@ -7,6 +7,6 @@ module.exports = {
       maxAge: 100000,
     },
     saveUninitialized: true,
-    resave: false,
+    resave: true,
   },
 };
