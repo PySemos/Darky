@@ -1,4 +1,4 @@
-const { model, Schema } = require("mongoose");
+const { model, Schema, SchemaType } = require("mongoose");
 const bcrypt = require("bcrypt")
 // Models
 const UserSchema = Schema(
@@ -7,6 +7,9 @@ const UserSchema = Schema(
     email: String,
     password: { type: String, required: true },
     active: { type: Boolean, default: true },
+    friends:[{
+      type: Schema.Types.ObjectId,ref:"users",required:false
+    }]
   },
   { versionKey: false }
 );
