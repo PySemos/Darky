@@ -1,7 +1,8 @@
 const http = require("http")
 const {Server} =require("socket.io")
-const Chat = require("./models/chat")
+const {Message,Chat} = require("./models/chat")
 const User = require("./models/user")
+const {getChatByUsers} = require("./utils/utilsChat")
 
 class ServerSocket{
 
@@ -29,18 +30,27 @@ class ServerSocket{
                 const toUser = await User.findOne({
                     username:to
                 })
-                console.log(body)
-                console.log(to)
-                console.log(toUser)
                 if(fromUser && toUser){
-                    const chat = new Chat({
+                    const message = new Message({
                         body:body,
                         from:fromUser._id,
                         to:toUser._id
                     })
-                    chat.save()
-                }
-            })
+                    message.save()
+                    let chat = await getChatByUsers([fromUser._id,toUser._id])
+                    if(chat === undefined){
+                        chat = new Chat({
+                            participants:[fromUser,toUser],
+                            messages:[message],
+                            lastMessage:message
+                        })
+                        chat.save()
+                    }
+                    else{
+                        chat.messages.push(message)
+                        chat.save()
+                    }   
+            }})
         })
     }
     

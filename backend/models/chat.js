@@ -1,9 +1,30 @@
 const {model,Schema} = require("mongoose")
+const same = require("../utils/same")
 
-const Chat = new Schema({
+const Message = new Schema({
     body:{type:String,required:true},
     from:{type:Schema.Types.ObjectId,ref:"users",required:true},
     to:{type:Schema.Types.ObjectId,ref:"users",required:true}
 })
 
-module.exports = model("chats",Chat)
+const Chat = new Schema({
+    participants : [
+        {
+            type:Schema.Types.ObjectId,
+            ref:"users"
+        }
+    ],
+    messages:[{
+        type:Schema.Types.ObjectId,
+        ref:"messages",
+    }],
+    lastMessage:{
+        type:Schema.Types.ObjectId,
+        ref:"messages",
+    }
+})
+
+module.exports = {
+    Message : model("message",Message),
+    Chat : model("chat",Chat)
+}

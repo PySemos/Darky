@@ -9,6 +9,7 @@ const DB = require("./database/connection");
 const userRoutes = require("./routes/user");
 const authRoutes = require("./routes/auth");
 const indexRoutes = require("./routes/index");
+const chatsRoutes = require("./routes/chats")
 const morgan = require("morgan")
 //Sockets
 const {ServerSocket} = require("./connections")
@@ -23,6 +24,7 @@ class App {
       index: "/",
       users: "/api/users",
       auth: "/api/auth",
+      chats: "/api/chats"
     };
 
     // Initializing the database
@@ -52,6 +54,7 @@ class App {
     this.app.use(this.paths.index, indexRoutes);
     this.app.use(this.paths.users, userRoutes);
     this.app.use(this.paths.auth, authRoutes);
+    this.app.use(this.paths.chats, chatsRoutes)
   }
 
   /* start() {
