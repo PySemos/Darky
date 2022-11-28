@@ -1,0 +1,3 @@
+
+Extras:
+    Luego de empezar el chat habilitar validificacion por email o telefono
