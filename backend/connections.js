@@ -1,6 +1,7 @@
 const http = require("http")
 const {Server} =require("socket.io")
 const {Message,Chat} = require("./models/chat")
+const user = require("./models/user")
 const User = require("./models/user")
 const {getChatByUsers} = require("./utils/utilsChat")
 
@@ -27,20 +28,38 @@ class ServerSocket{
                 const fromUser = await User.findOne({
                     username:socket.request.session.username
                 })
-                const toUser = await User.findOne({
-                    username:to
-                })
-                if(fromUser && toUser){
+                let toUsers = []
+                if(Array.isArray(to)){
+                    console.log("if")
+                    for(let i of to){
+                        var temp = await User.findOne({
+                            username:i
+                        })
+                        if (temp){
+                            toUsers.push(temp)
+                        }
+                    }
+                }
+                else{
+                    console.log("else")
+                    toUsers.push(
+                        await User.findOne({
+                            username:to
+                        })
+                    )
+                }
+                console.log(toUsers)
+                if(fromUser && toUsers){
                     const message = new Message({
                         body:body,
                         from:fromUser._id,
-                        to:toUser._id
+                        to:toUsers
                     })
                     message.save()
-                    let chat = await getChatByUsers([fromUser._id,toUser._id])
+                    let chat = await getChatByUsers([fromUser._id,...toUsers])
                     if(chat === undefined){
                         chat = new Chat({
-                            participants:[fromUser,toUser],
+                            participants:[fromUser,...toUsers],
                             messages:[message],
                             lastMessage:message
                         })
